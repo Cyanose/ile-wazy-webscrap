@@ -10,5 +10,5 @@ Just run `./ile_wazy_web_scrap.sh` script to start scraping the ilewazy.pl produ
 
 ## Debugging
 
-In case the script bugs, you will find the *linksPage(NUM)* file in the current directory, It's name indicates, on which site the script got stucked. You can debug it simply by changing the first parameter in *for* loop seq`for pageNum in $(seq` **1** `1 351)`, to the number that you saw in the name of *linksPage(NUM)* file, incremented by one. This will continue scrapping from the next page. In my case it bugged like 2/3 times, for example while parsing **5_pieczonych_slimakow_winniczków_po_burgundzku** for unknown reason.
+In case the script bugs, you will find the *linksPage(NUM)* file in the current directory, It's name indicates, on which site the script got stucked. You can debug it simply by changing the first parameter in *for* loop seq`for pageNum in $(seq` **1** `1 351)`, to the number that you saw in the name of *linksPage(NUM)* file, incremented by one. This will continue scrapping from the next page. In my case it bugged like 2/3 times, for example while parsing **5_pieczonych_slimakow_winniczkow_po_burgundzku** for unknown reason.
 
