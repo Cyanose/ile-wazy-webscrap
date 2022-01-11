@@ -1,6 +1,6 @@
 # ile-wazy-webscrap
 
-Simple shell scripts to web scrap product's most essential macronutrients such as: kcal, carbs, proteins, fats from the ilewazy site, and insert them to your own local sqlite database. 
+Simple shell scripts to web scrap product's most essential macronutrients such as: kcal, carbs, proteins, fats from the ilewazy site and insert them to your own local sqlite database. 
 
 ## Usage
 
