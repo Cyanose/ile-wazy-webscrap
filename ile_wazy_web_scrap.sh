@@ -1,8 +1,8 @@
 #!/bin/bash
 # The script curl the site given as the parameter, extracts the most 
 #important macronutrients and insersts formated values to the database 
-#db=(/home/cyanos/projekty/ile_wazy_webscrap/ile_wazy.db)
-db=($(sed '2q;d' conf))
+db="$PWD/ile_wazy.db"
+
 file=$(echo $1 | sed 's|http://www.ilewazy.pl/||g' | sed 's/-/_/g')
 curl $1 | html2text > $file
 begin=$(grep -n "Energia " $file | cut -f1 -d:)

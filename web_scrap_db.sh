@@ -1,4 +1,5 @@
 #!/bin/sh
+homepage="http://www.ilewazy.pl/produkty/page/"
 
 delete_shitty_links () {
 sed -i '/zaloguj/d' $1
@@ -20,7 +21,7 @@ sed -i '/.pl$/d' $1 #delete homepage link
 # the first parameter of the seq command below to be that number + 1 
 for pageNum in $(seq 1 1 351)
 do
-	site=($(sed '1q;d' conf)${pageNum})
+	site=($homepage${pageNum})
 	curl $site | html2text | grep -Eo "(http)://[a-zA-Z0-9./?=_%:-]*" | sort -u > linksPage${pageNum}
 	delete_shitty_links linksPage${pageNum}
 	end=$(wc -l < linksPage${pageNum})
