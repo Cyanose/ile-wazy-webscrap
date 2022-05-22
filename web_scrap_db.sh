@@ -2,17 +2,7 @@
 homepage="http://www.ilewazy.pl/produkty/page/"
 
 delete_shitty_links () {
-sed -i '/zaloguj/d' $1
-sed -i '/zarejestruj/d' $1
-sed -i '/uwagi/d' $1
-sed -i '/regulamin/d' $1
-sed -i '/o-stronie/d' $1
-sed -i '/kategoria/d' $1
-sed -i '/dziennik/d' $1
-sed -i '/img/d' $1
-sed -i '/edi/d' $1
-sed -i '/-$/d' $1 #delete all broken food links
-sed -i '/.pl$/d' $1 #delete homepage link
+sed -i '/zaloguj/d; /zarejestruj/d; /uwagi/d; /regulamin/d; /o-stronie/d; /kategoria/d; /dziennik/d; /img/d; /edi/d; /-$/d; /.pl$/d ' $1
 }
 
 # the whole ilewazy database contains 351 pages
@@ -22,12 +12,15 @@ sed -i '/.pl$/d' $1 #delete homepage link
 for pageNum in $(seq 1 1 351)
 do
 	site=($homepage${pageNum})
-	curl $site | html2text | grep -Eo "(http)://[a-zA-Z0-9./?=_%:-]*" | sort -u > linksPage${pageNum}
+	curl $site | html2text | \
+		grep -Eo "(http)://[a-zA-Z0-9./?=_%:-]*" | \
+		sort -u > linksPage${pageNum}
 	delete_shitty_links linksPage${pageNum}
 	end=$(wc -l < linksPage${pageNum})
 	for lines in $(seq 1 1 $end)
 		do
-		# here the script extracting values will run multiple times parsing arguments from the linksPage temporary file 
+# here the script extracting values will run 
+# multiple times parsing arguments from the linksPage temporary file 
 		./ile_wazy_web_scrap.sh $(sed "${lines}q;d" linksPage${pageNum})
 		done
 	rm linksPage${pageNum}
