@@ -10,16 +10,15 @@ begin=$(( $begin - 1 ))
 sed -i $file -re "1,${begin}d"
 end=$(grep -n "Błonnik " $file | cut -f1 -d:)
 sed -i $file -re "${end},\$d"
-sed -i '/Kwasy tłuszczowe nasycone/d' $file
-sed -i '/Cukry proste/d' $file
-sed -i 's/,/./g' $file
-sed -i 's/Energia |  //g' $file
+sed -i '/Kwasy tłuszczowe nasycone/d; 
+	/Cukry proste/d; s/,/./g; 
+	s/Energia |  //g' $file
 
 #extracting values 
 kcal=$(cut -c 1-3 < $file | head -1)
-proteins=$(grep -oE "([0-9]\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '1q;d')
-fats=$(grep -oE "([0-9]\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '2q;d')
-carbs=$(grep -oE "([0-9]\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '3q;d')
+proteins=$(grep -oE "([0-9]{1,3}\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '1q;d')
+fats=$(grep -oE "([0-9]{1,3}\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '2q;d')
+carbs=$(grep -oE "([0-9]{1,3}\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '3q;d')
 #inserting values into sqlite database
 sqlite3 $db "insert into food (name,kcal,carbs,proteins,fats) 
 values ('${file}',$kcal,$carbs,$proteins,$fats);"

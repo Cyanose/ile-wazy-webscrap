@@ -4,7 +4,7 @@ Simple shell scripts to web scrap product's most essential macronutrients such a
 
 ## Usage
 
-run command: `sqlite3 ile_wazy.db 'create table food(name text PRIMARY KEY, kcal real, carbs real, proteins real, fats real);'`. This will create create the table into which the script will be inserting informations about the products.
+run command: `CREATE TABLE food( record INTEGER PRIMARY KEY AUTOINCREMENT, name text , kcal real, carbs real, proteins real, fats real );` . This will create create the table into which the script will be inserting informations about the products.
 
 Just run `./web_scrap_db.sh` script to start scraping the ilewazy.pl product base. If you want to insert only the particular product from the ilewazy.pl site, run `./ile_wazy_web_scrap.sh` passing the link to the exact ilewazy.pl page that you want scrap.
 
