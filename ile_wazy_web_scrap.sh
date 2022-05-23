@@ -1,32 +1,23 @@
-#!/bin/bash
+#!/bin/sh
 # The script curl the site given as the parameter, extracts the most 
-#important macronutrients and insersts formated values to the database 
+#important macronutrients and insersts this infos to the database 
+file=$(echo $1 | sed 's|http://www.ilewazy.pl/||g; s/-/_/g')
 db="$PWD/ile_wazy.db"
+echo $file
 
-file=$(echo $1 | sed 's|http://www.ilewazy.pl/||g' | sed 's/-/_/g')
-curl $1 | html2text > $file
-begin=$(grep -n "Energia " $file | cut -f1 -d:)
-begin=$(( $begin - 1 ))
-sed -i $file -re "1,${begin}d"
-end=$(grep -n "Błonnik " $file | cut -f1 -d:)
-sed -i $file -re "${end},\$d"
-sed -i '/Kwasy tłuszczowe nasycone/d; 
-	/Cukry proste/d; s/,/./g; 
-	s/Energia |  //g' $file
+curl $1 | pup "#ilewazy-ingedients > tbody text{}" | sed -r '/^\s*$/d; s/,/./g' | awk '{print $1}' > $file 
 
-#extracting values 
-kcal=$(cut -c 1-3 < $file | head -1)
-proteins=$(grep -oE "([0-9]{1,3}\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '1q;d')
-fats=$(grep -oE "([0-9]{1,3}\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '2q;d')
-carbs=$(grep -oE "([0-9]{1,3}\.[0-9].g..\|)" $file | sed 's/.g..|//' | sed '3q;d')
-#inserting values into sqlite database
+kcal=$(grep -A 1 "Energia" $file | tail -1)
+carbs=$(grep -A 1 "glowodany$" $file | tail -1)
+proteins=$(grep -A 1 "Bia*" $file | tail -1)
+fats=$(grep -A 1 "uszcz$" $file | tail -1)
+
 sqlite3 $db "insert into food (name,kcal,carbs,proteins,fats) 
 values ('${file}',$kcal,$carbs,$proteins,$fats);"
 rm $file
-# print the extracted values
+
 echo " "
-echo "name: $file"
-echo "kcal: $kcal"
-echo "proteins: ${proteins}"
-echo "fats: ${fats}"
-echo "carbs: ${carbs}"
+echo kcal: $kcal
+echo proteins: $proteins
+echo fats: $fats
+echo carbs: $carbs

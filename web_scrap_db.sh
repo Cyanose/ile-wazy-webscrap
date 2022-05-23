@@ -2,7 +2,9 @@
 homepage="http://www.ilewazy.pl/produkty/page/"
 
 delete_shitty_links () {
-sed -i '/zaloguj/d; /zarejestruj/d; /uwagi/d; /regulamin/d; /o-stronie/d; /kategoria/d; /dziennik/d; /img/d; /edi/d; /-$/d; /.pl$/d ' $1
+sed -i '/zaloguj/d; /zarejestruj/d; /uwagi/d; 
+	/regulamin/d; /o-stronie/d; /kategoria/d; 
+	/dziennik/d; /img/d; /edi/d; /-$/d; /.pl$/d ' $1
 }
 
 # the whole ilewazy database contains 351 pages
